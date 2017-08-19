@@ -4,7 +4,7 @@ height			= 4,
 outer_diameter	= 8,
 inner_diameter	= 4,
 string_width	= 1,
-angle			= 30){
+angle			= 60){
 	difference(){
 		scale([ 2, 1, 1]){
 			union(){
@@ -22,9 +22,9 @@ angle			= 30){
 			}
 		}
 		union(){
-			rotate([ 0, angle, 0]){ translate([ 0, 0, - height]){
+			translate([ 0, 0, height/2]){rotate([ 0, angle, 0]){ translate([ 0, 0, - 2*height]){
 				cylinder( height*4, inner_diameter/2, inner_diameter/2);
-			}}
+			}}}
 		}
 	}
 }
