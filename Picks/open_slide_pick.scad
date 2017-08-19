@@ -5,8 +5,6 @@ D_height = 4;
 D_slot_height = 1;
 D_slot_depth = 3.5;
 D_slot_length = D_length - 20;
-D_slider_endstop = 20;
-D_slider_overhang = 1.5;
 D_wrench_offset = 1.5;
 D_wrench_height = 3.3;
 D_wrench_depth = 1.3;
@@ -15,6 +13,14 @@ D_seam_height = (D_height + D_slot_height)/2;
 D_seam_pin_distance = 1.5;
 D_seam_pin_diameter = 2;
 D_lacehole_diameter = 5;
+D_slider_endstop = 20;
+D_slider_overhang = 1.5;
+D_slider_length = 8;
+D_slider_pin_distance = D_slider_length/2;
+D_slider_pin_diameter = 1.1;
+D_knob_height = 2;
+D_knob_width = 6;
+D_knob_length = 10;
 
 module open_slide_pick(
 length				= D_length,
@@ -69,6 +75,7 @@ lacehole_diameter	= D_lacehole_diameter
 		}
 	}
 }
+
 module seam(
 seam_height = D_seam_height,
 seam_pin_diameter = D_seam_pin_diameter,
@@ -100,6 +107,7 @@ height = D_height){
 		}
 	}
 }
+
 module upper(){
 	rotate([180,0,0]){
 		difference(){
@@ -108,10 +116,30 @@ module upper(){
 		}
 	}
 }
+
 module lower(){
 	intersection(){
 		open_slide_pick();
 		seam();
 	}
 }
-lower();
+
+module slider(
+slider_height		= D_slot_height - 0.2,
+slider_depth		= D_slot_depth - 0.8,
+slider_length		= D_slider_length,
+slider_pin_diameter	= D_slider_pin_diameter,
+slider_pin_distance	= D_slider_pin_distance,
+pin_height			= ( D_height + D_slot_height)/2 + D_knob_height){
+	union(){
+		cube([ slider_length, slider_depth, slider_height]);
+		translate([( slider_length - slider_pin_distance)/2, slider_depth/2, 0]){
+			cylinder( pin_height, slider_pin_diameter/2, slider_pin_diameter/2);
+		}
+		translate([( slider_length + slider_pin_distance)/2, slider_depth/2, 0]){
+			cylinder( pin_height, slider_pin_diameter/2, slider_pin_diameter/2);
+		}
+	}
+}
+
+slider();
