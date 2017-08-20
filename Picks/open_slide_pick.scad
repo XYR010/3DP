@@ -169,5 +169,3 @@ slider_bridge_height	= D_knob_height + ( D_height + D_slot_height)/2
 		}
 	}
 }
-
-knob();
