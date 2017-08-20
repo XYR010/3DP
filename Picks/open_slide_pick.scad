@@ -1,4 +1,4 @@
-$fn = 32;
+$fn = 34;
 D_length = 80;
 D_depth = 12;
 D_height = 4;
@@ -14,12 +14,15 @@ D_seam_pin_distance = 1.5;
 D_seam_pin_diameter = 2;
 D_lacehole_diameter = 5;
 D_slider_endstop = 20;
-D_slider_overhang = 1.5;
+D_slider_overhang = 1;
 D_slider_length = 8;
-D_slider_pin_distance = D_slider_length/2;
-D_slider_pin_diameter = 1.1;
+D_slider_bridge_length = D_slider_length - 4;
+D_slider_clip_length1 = 1;
+D_slider_clip_length2 = 1;
+D_slider_clip_depth1 = -2;
+D_slider_clip_depth2 = -1;
 D_knob_height = 2;
-D_knob_width = 6;
+D_knob_depth = 6;
 D_knob_length = 10;
 
 module open_slide_pick(
@@ -125,21 +128,46 @@ module lower(){
 }
 
 module slider(
-slider_height		= D_slot_height - 0.2,
-slider_depth		= D_slot_depth - 0.8,
-slider_length		= D_slider_length,
-slider_pin_diameter	= D_slider_pin_diameter,
-slider_pin_distance	= D_slider_pin_distance,
-pin_height			= ( D_height + D_slot_height)/2 + D_knob_height){
-	union(){
+slider_height			= D_slot_height - 0.2,
+slider_depth			= D_slot_depth - 0.6,
+slider_length			= D_slider_length,
+slider_bridge_length	= D_slider_bridge_length,
+slider_bridge_depth		= D_slot_depth - D_slider_overhang - 0.6,
+slider_clip_length1		= D_slider_clip_length1,
+slider_clip_length2		= D_slider_clip_length2,
+slider_clip_depth1		= D_slot_depth - 0.6 + D_slider_clip_depth1,
+slider_clip_depth2		= D_slot_depth - 0.6 + D_slider_clip_depth2
+){
+	difference(){
 		cube([ slider_length, slider_depth, slider_height]);
-		translate([( slider_length - slider_pin_distance)/2, slider_depth/2, 0]){
-			cylinder( pin_height, slider_pin_diameter/2, slider_pin_diameter/2);
-		}
-		translate([( slider_length + slider_pin_distance)/2, slider_depth/2, 0]){
-			cylinder( pin_height, slider_pin_diameter/2, slider_pin_diameter/2);
+		union(){
+			translate([( slider_length - slider_bridge_length + slider_clip_length1 + slider_clip_length2)/2 , (slider_depth - slider_bridge_depth)/2, 0]){
+				cube([ slider_bridge_length, slider_bridge_depth, slider_height]);
+			}
+			translate([ 0, ( slider_depth - slider_clip_depth1)/2, 0]){
+				cube([ slider_clip_length1, slider_clip_depth1, slider_height]);
+			}
+			translate([ slider_clip_length1, ( slider_depth - slider_clip_depth2)/2, 0]){
+				cube([ slider_clip_length2, slider_clip_depth2, slider_height]);
+			}
 		}
 	}
 }
 
-slider();
+module knob(
+knob_length				= D_knob_length,
+knob_depth				= D_knob_depth,
+knob_height				= D_knob_height,
+slider_bridge_length	= D_slider_bridge_length - 0.8,
+slider_bridge_depth		= D_slot_depth - D_slider_overhang - 1,
+slider_bridge_height	= D_knob_height + ( D_height + D_slot_height)/2
+){
+	union(){
+		cube([ knob_length, knob_depth, knob_height]);
+		translate([( knob_length - slider_bridge_length)/2, ( knob_depth - slider_bridge_depth)/2, 0]){
+			cube([ slider_bridge_length, slider_bridge_depth, slider_bridge_height]);
+		}
+	}
+}
+
+knob();
