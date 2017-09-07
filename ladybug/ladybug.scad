@@ -1,0 +1,32 @@
+$fn = 64;
+difference(){
+	union(){
+		sphere(10);
+		translate([0,10,0]){
+			cylinder(1,3,3);
+		}
+		difference(){
+			sphere(11);
+			union(){
+				translate([-0.5,-20,-20]){
+					cube([1,40,40]);
+				}
+				translate([0,25,-20]){
+					cylinder(40, 20,20);
+				}
+			}
+		}
+		translate([-3,7,5]){
+			sphere(2);
+		}
+		translate([3,7,5]){
+			sphere(2);
+		}
+	}
+	translate([0,10,0]){
+		cylinder(1,2,2);
+	}
+	translate([-20,-20,-20]){
+		cube([40,40,20]);
+	}
+}

@@ -12,3 +12,6 @@ scale([SIZE*10,SIZE*10,SIZE*35]){
         }
     }
 }
+translate([0,0,-4]){
+    cylinder(4,4,4);
+}
