@@ -1,0 +1,10 @@
+$fn=64;
+union(){
+    cylinder(0.5,2.5,3);
+    translate([0,0,0.5]){
+        cylinder(1,3,3);
+    }
+    translate([0,0,1.5]){
+        cylinder(0.5,3,2.5);
+    }
+}
